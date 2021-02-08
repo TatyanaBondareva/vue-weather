@@ -14,64 +14,56 @@
         <SelectCity v-model="selectedCity" :options="list"></SelectCity>
       </div>
       <div v-if="weatherData" class="weather">
-        <div class="weather-block weather__block">
-          <img
-            :src="`/images/icons/${clouds.icon}.svg`"
-            class="weather__icon w-12 h-12"
-            alt=""
-          />
-          <div class="weather__middle-text weather__middle-text_big">
-            {{ clouds.text }}
-          </div>
-        </div>
-        <div class="weather__block weather__block_temp">
-          <span class="weather__big-text text-6xl leading-tight leading-4">{{
-            temp
-          }}</span>
-          <sup class="weather__temperature-sup-text text-2xl">°C</sup>
-        </div>
-        <div class="weather__block">
-          <div class="weather__max-min weather__max-min_max">
-            {{ maxTemp }}°C
-          </div>
-          <div class="weather__max-min weather__max-min_min">
-            {{ minTemp }}°C
-          </div>
-        </div>
-        <div class="weather__block">
-          <img src="~/assets/icons/humidity.svg" alt="" class="weather__icon" />
-          <div class="weather__middle-text">{{ humidity }}%</div>
-          <div class="weather__small-text">Humidity</div>
-        </div>
-        <div class="weather__block">
-          <img src="~/assets/icons/pressure.svg" alt="" class="weather__icon" />
-          <div class="weather__middle-text">{{ pressure }} Bar</div>
-          <div class="weather__small-text">Pressure</div>
-        </div>
-        <div class="weather__block">
-          <img
-            src="~/assets/icons/windSpeed.svg"
-            alt=""
-            class="weather__icon"
-          />
-          <div class="weather__middle-text">{{ windSpeed }} km/h</div>
-          <div class="weather__small-text">Wind</div>
-        </div>
-        <div class="weather__block">
-          <img src="~/assets/icons/sunrise.svg" alt="" class="weather__icon" />
-          <div class="weather__middle-text">{{ sunrise }}</div>
-          <div class="weather__small-text">Sunrise</div>
-        </div>
-        <div class="weather__block">
-          <img src="~/assets/icons/sunset.svg" alt="" class="weather__icon" />
-          <div class="weather__middle-text">{{ sunset }}</div>
-          <div class="weather__small-text">Sunset</div>
-        </div>
-        <div class="weather__block">
-          <img src="~/assets/icons/daytime.svg" alt="" class="weather__icon" />
-          <div class="weather__middle-text">{{ dayLong }}</div>
-          <div class="weather__small-text">Daytime</div>
-        </div>
+        <WeatherBlock
+          class-name="weather-block block-without-text"
+          :icon="`/images/icons/${clouds.icon}.svg`"
+          :title="clouds.text"
+        />
+        <WeatherBlock
+          class-name=" weather-block_temp weather-block"
+          :temp="temp"
+        />
+        <WeatherBlock
+          class-name=" weather-block"
+          :max-temp="maxTemp"
+          :min-temp="minTemp"
+        />
+        <WeatherBlock
+          class-name="weather-block"
+          icon="/_nuxt/static/icons/humidity.svg"
+          :title="humidity + '%'"
+          text="Humidity"
+        />
+        <WeatherBlock
+          class-name="weather-block"
+          icon="/_nuxt/static/icons/pressure.svg"
+          :title="pressure + ' Bar'"
+          text="Pressure"
+        />
+        <WeatherBlock
+          class-name="weather-block"
+          icon="/_nuxt/static/icons/windSpeed.svg"
+          :title="windSpeed + ' km/h'"
+          text="Wind"
+        />
+        <WeatherBlock
+          class-name="weather-block"
+          icon="/_nuxt/static/icons/sunrise.svg"
+          :title="sunrise"
+          text="Sunrise"
+        />
+        <WeatherBlock
+          class-name="weather-block"
+          icon="/_nuxt/static/icons/sunset.svg"
+          :title="sunset"
+          text="Sunset"
+        />
+        <WeatherBlock
+          class-name="weather-block"
+          icon="/_nuxt/static/icons/daytime.svg"
+          :title="dayLong"
+          text="Daytime"
+        />
         <div class="weather__carousel">
           <div
             class="weather__blocks-wrapper"
@@ -79,7 +71,7 @@
           >
             <div class="weather__block">
               <img
-                src="~/assets/icons/daytime.svg"
+                src="../static/icons/daytime.svg"
                 alt=""
                 class="weather__icon"
               />
@@ -88,7 +80,7 @@
             </div>
             <div class="weather__block">
               <img
-                src="~/assets/icons/daytime.svg"
+                src="../static/icons/daytime.svg"
                 alt=""
                 class="weather__icon"
               />
@@ -97,7 +89,7 @@
             </div>
             <div class="weather__block">
               <img
-                src="~/assets/icons/daytime.svg"
+                src="../static/icons/daytime.svg"
                 alt=""
                 class="weather__icon"
               />
@@ -106,7 +98,7 @@
             </div>
             <div class="weather__block">
               <img
-                src="~/assets/icons/daytime.svg"
+                src="../static/icons/daytime.svg"
                 alt=""
                 class="weather__icon"
               />
@@ -115,7 +107,7 @@
             </div>
             <div class="weather__block">
               <img
-                src="~/assets/icons/daytime.svg"
+                src="../static/icons/daytime.svg"
                 alt=""
                 class="weather__icon"
               />
@@ -124,7 +116,7 @@
             </div>
             <div class="weather__block">
               <img
-                src="~/assets/icons/daytime.svg"
+                src="../static/icons/daytime.svg"
                 alt=""
                 class="weather__icon"
               />
@@ -133,7 +125,7 @@
             </div>
             <div class="weather__block">
               <img
-                src="~/assets/icons/daytime.svg"
+                src="../static/icons/daytime.svg"
                 alt=""
                 class="weather__icon"
               />
@@ -371,27 +363,14 @@ export default {
     @apply pr-3 text-base;
 
     &_max {
-      background: url('~assets/icons/arrow-top.svg') no-repeat center right;
+      background: url('~assets/../static/icons/arrow-top.svg') no-repeat center
+        right;
     }
 
     &_min {
-      background: url('~assets/icons/arrow-bottom.svg') no-repeat center right;
+      background: url('~assets/../static/icons/arrow-bottom.svg') no-repeat
+        center right;
     }
-  }
-
-  &__middle-text {
-    @apply font-medium text-base leading-5 mb-1;
-
-    &_big {
-      line-height: 20px;
-      @apply text-lg;
-    }
-  }
-
-  &__small-text {
-    color: #999;
-    font-size: 8px;
-    line-height: 10px;
   }
 
   &__icon {

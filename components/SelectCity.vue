@@ -37,7 +37,7 @@ export default {
   @apply relative;
   &::before {
     content: '';
-    background-image: url('~assets/icons/places.svg');
+    background-image: url('../static/icons/places.svg');
     background-size: 1em;
     background-position: center;
     background-repeat: no-repeat;
