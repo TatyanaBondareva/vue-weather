@@ -42,6 +42,9 @@ export const mutations = {
   UPDATE_IS_NIGHT_NOW(state, data) {
     state.isNightNow = data
   },
+  UPDATE_LOADING(state, data) {
+    state.loading = data
+  },
 }
 
 export const actions = {
@@ -52,6 +55,7 @@ export const actions = {
   updateIsNightNow({ commit }, data) {
     commit('UPDATE_IS_NIGHT_NOW', data)
   },
+
   /**
    * function(param1, param2, ...paramN) {}
    * param1 = {} = { state, getters }
@@ -60,7 +64,7 @@ export const actions = {
    */
   async getWeatherData({ state, commit }) {
     try {
-      state.loading = true
+      commit('UPDATE_LOADING', true)
       const response = await this.$axios.$get('/data/2.5/weather', {
         params: {
           id: state.selectedCityId,
@@ -73,7 +77,7 @@ export const actions = {
     } catch (e) {
       commit('UPDATE_WEATHER_DATA', null)
     } finally {
-      state.loading = false
+      commit('UPDATE_LOADING', false)
     }
   },
 }
