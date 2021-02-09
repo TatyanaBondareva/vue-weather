@@ -33,15 +33,19 @@ export default {
 .select-wraapper {
   align-self: flex-end;
   position: relative;
-  top: -32px;
-  @apply relative;
+  top: 0;
+  border-top-right-radius: 1.5rem;
+  border-bottom-left-radius: 1.5rem;
+  @apply relative bg-gray-200 p-0;
+
   &::before {
     content: '';
+    right: 4px;
     background-image: url('../static/icons/places.svg');
-    background-size: 1em;
+    background-size: 0.6rem;
     background-position: center;
     background-repeat: no-repeat;
-    @apply absolute inset-y-0 right-0 w-10;
+    @apply absolute inset-y-0 w-8;
   }
 }
 
@@ -49,8 +53,15 @@ export default {
   outline: none;
   appearance: none;
   cursor: pointer;
+  font-family: 'Barlow', sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+  text-align: center;
+  color: #0da0ea;
   border-top-right-radius: 1.5rem;
   border-bottom-left-radius: 1.5rem;
-  @apply bg-gray-200 text-blue-600 p-3 pr-10;
+  @apply bg-gray-200 p-3 px-10;
 }
 </style>

@@ -1,12 +1,28 @@
 <template>
-  <header class="header">
+  <header :class="className">
     <img src="../assets/images/sky-background.png" alt="" />
   </header>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'Header',
+  ...mapGetters('cities', ['isNightNow']),
+  computed: {
+    thisNight: {
+      get() {
+        return this.isNightNow
+      },
+      set(isNightNow) {
+        this.updateIsNightNow(isNightNow)
+      },
+    },
+    className() {
+      return this.thisNight ? 'header header_night' : 'header header_day'
+    },
+  },
 }
 </script>
 

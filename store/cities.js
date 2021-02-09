@@ -6,6 +6,8 @@ export const state = () => ({
   ],
   selectedCityId: '484907',
   weatherData: null,
+  loading: false,
+  isNightNow: false,
 })
 
 export const getters = {
@@ -20,6 +22,14 @@ export const getters = {
   selectedCityId: (state) => {
     return state.selectedCityId
   },
+
+  loading: (state) => {
+    return state.loading
+  },
+
+  isNightNow: (state) => {
+    return state.isNightNow
+  },
 }
 
 export const mutations = {
@@ -29,11 +39,18 @@ export const mutations = {
   UPDATE_WEATHER_DATA(state, weatherData) {
     state.weatherData = weatherData
   },
+  UPDATE_IS_NIGHT_NOW(state, data) {
+    state.isNightNow = data
+  },
 }
 
 export const actions = {
   updateSelectedCityId({ commit }, id) {
     commit('UPDATE_SELECTED_CITY_ID', id)
+  },
+
+  updateIsNightNow({ commit }, data) {
+    commit('UPDATE_IS_NIGHT_NOW', data)
   },
   /**
    * function(param1, param2, ...paramN) {}
@@ -42,8 +59,8 @@ export const actions = {
    * param3 = 'Str'
    */
   async getWeatherData({ state, commit }) {
-    console.log('getWeatherData')
     try {
+      state.loading = true
       const response = await this.$axios.$get('/data/2.5/weather', {
         params: {
           id: state.selectedCityId,
@@ -51,9 +68,12 @@ export const actions = {
           units: 'metric',
         },
       })
+
       commit('UPDATE_WEATHER_DATA', response)
     } catch (e) {
       commit('UPDATE_WEATHER_DATA', null)
+    } finally {
+      state.loading = false
     }
   },
 }
