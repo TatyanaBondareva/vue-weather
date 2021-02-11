@@ -1,14 +1,14 @@
 <template>
   <div class="weather-block next-day-block">
-    <img src="/icons/sunrise.svg" alt="" class="weather-block__icon" />
-    <div class="next-day-block__title">Mon, 21</div>
+    <img :src="icon" alt="" class="weather-block__icon" />
+    <div class="next-day-block__title">{{ day }}, {{ date }}</div>
     <div class="next-day-block__min-max">
-      <span class="next-day-block__min-max next-day-block__min-max_max"
-        >35°C</span
-      >
-      <span class="next-day-block__min-max next-day-block__min-max_min"
-        >26°C</span
-      >
+      <span class="next-day-block__min-max next-day-block__min-max_max">{{
+        max
+      }}</span>
+      <span class="next-day-block__min-max next-day-block__min-max_min">{{
+        min
+      }}</span>
     </div>
   </div>
 </template>
@@ -17,7 +17,11 @@
 export default {
   name: 'NextDayBlockComponent',
   props: {
-    date: { type: String },
+    day: { type: String },
+    date: { type: Number },
+    icon: { type: String },
+    max: { type: Number },
+    min: { type: Number },
   },
 }
 </script>

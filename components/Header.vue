@@ -1,7 +1,7 @@
 <template>
   <div>
     <header :class="className">
-      <img :src="'/images/' + skyImageName + '.jpg'" alt="" />
+      <img class="sky-image" :src="'/images/' + skyImageName + '.png'" alt="" />
     </header>
   </div>
 </template>
@@ -42,5 +42,8 @@ export default {
   &_night {
     background: linear-gradient(180deg, #33284b 0%, #111520 100%);
   }
+}
+.sky-image {
+  max-width: 375px;
 }
 </style>

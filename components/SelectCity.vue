@@ -1,7 +1,12 @@
 <template>
   <div class="select-wraapper">
     <select v-model="currentCityValue" class="select">
-      <option v-for="item in options" :key="item.label" :value="item.value">
+      <option
+        v-for="item in options"
+        :key="item.label"
+        class="overflow-ellipsis"
+        :value="item.value"
+      >
         {{ item.label }}
       </option>
     </select>
@@ -36,7 +41,7 @@ export default {
   top: 0;
   border-top-right-radius: 1.5rem;
   border-bottom-left-radius: 1.5rem;
-  @apply relative bg-gray-200 p-0;
+  @apply relative bg-gray-200 p-0 w-1/2;
 
   &::before {
     content: '';
@@ -62,6 +67,7 @@ export default {
   color: #0da0ea;
   border-top-right-radius: 1.5rem;
   border-bottom-left-radius: 1.5rem;
-  @apply bg-gray-200 p-3 px-10;
+  max-width: 185px;
+  @apply bg-gray-200 p-3 px-10 truncate;
 }
 </style>

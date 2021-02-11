@@ -1,13 +1,15 @@
 <template>
   <div class="carousel-container">
     <VueSlickCarousel v-bind="settings">
-      <NextDayBlockComponent />
-      <NextDayBlockComponent />
-      <NextDayBlockComponent />
-      <NextDayBlockComponent />
-      <NextDayBlockComponent />
-      <NextDayBlockComponent />
-      <NextDayBlockComponent />
+      <NextDayBlockComponent
+        v-for="(item, index) in nextWeekWeather"
+        :key="index"
+        :day="getDayName(item.date)"
+        :date="getDate(item.date)"
+        :max="getTemp(item.temp.max)"
+        :min="getTemp(item.temp.min)"
+        :icon="'/images/icons/' + item.icon + '.svg'"
+      />
     </VueSlickCarousel>
   </div>
 </template>
@@ -20,6 +22,9 @@ import 'vue-slick-carousel/dist/vue-slick-carousel-theme.css'
 export default {
   name: 'CarouselComponent',
   components: { VueSlickCarousel },
+  props: {
+    nextWeekWeather: { type: [Array, Object] },
+  },
   data() {
     return {
       settings: {
@@ -32,6 +37,17 @@ export default {
         speed: 500,
       },
     }
+  },
+  methods: {
+    getDayName(date) {
+      return date.toDateString().substring(0, 3)
+    },
+    getDate(date) {
+      return date.getDate()
+    },
+    getTemp(arg) {
+      return Math.round(arg)
+    },
   },
 }
 </script>

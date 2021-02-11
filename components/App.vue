@@ -2,13 +2,7 @@
   <div>
     <div v-if="!dataLoading" class="container">
       <div class="date-and-city-wrapper">
-        <CurrentDateComponent
-          :today-day="todayDay"
-          :today-day-number="todayDayNumber"
-          :today-month="todayMonth"
-          :today-full-year="todayFullYear"
-          :today-time-now="todayTimeNow"
-        />
+        <CurrentDateComponent />
         <SelectCity v-model="selectedCity" :options="list"></SelectCity>
       </div>
       <div v-if="weatherData" class="weather">
@@ -50,7 +44,10 @@
           :title="dayLong"
           text="Daytime"
         />
-        <CarouselComponent />
+        <CarouselComponent
+          v-if="nextWeekWeatherData"
+          :next-week-weather="nextWeekWeatherData"
+        />
       </div>
       <p v-else>Empty data</p>
     </div>
@@ -82,15 +79,29 @@ export default {
       'list',
       'weatherData',
       'selectedCityId',
+      'selectedCityCoordinates',
       'loading',
       'isNightNow',
+      'weatherDataForWeek',
     ]),
     selectedCity: {
       get() {
         return this.selectedCityId
       },
-      set(selectedCityId) {
-        this.updateSelectedCityId(selectedCityId)
+      set(selectedCity) {
+        this.updateSelectedCityId(selectedCity)
+        // this.$store.commit('cities/UPDATE_SELECTED_CITY_ID', selectedCityId)
+      },
+    },
+    cityCoordinates: {
+      get() {
+        return this.selectedCityCoordinates
+      },
+      set() {
+        const res = this.list.find((item) => {
+          return this.list.id === this.selectedCity
+        })
+        this.updateSelectedCityCoordinates(res)
         // this.$store.commit('cities/UPDATE_SELECTED_CITY_ID', selectedCityId)
       },
     },
@@ -153,37 +164,8 @@ export default {
       }
       return ''
     },
-    todayDay() {
-      if (this.weatherData) {
-        const day = this.getDate(this.weatherData.dt)
-        return this.getDayName(day)
-      }
-      const day = this.getDate(Date.now())
-      return this.getDayName(day)
-    },
-    todayDayNumber() {
-      if (this.weatherData) {
-        return this.getDate(this.weatherData.dt).getDate()
-      }
-      return this.getDate(Date.now()).getDate()
-    },
-    todayMonth() {
-      if (this.weatherData) {
-        return this.getDate(this.weatherData.dt).getMonth()
-      }
-      return this.getDate(Date.now()).getMonth()
-    },
-    todayFullYear() {
-      if (this.weatherData) {
-        return this.getDate(this.weatherData.dt).getFullYear()
-      }
-      return this.getDate(Date.now()).getFullYear()
-    },
-    todayTimeNow() {
-      if (this.weatherData) {
-        return this.getTimeFromDate(this.weatherData.dt)
-      }
-      return this.getTimeFromDate(Date.now())
+    nextWeekWeatherData() {
+      return this.getWeatherForWeek()
     },
   },
 
@@ -199,23 +181,34 @@ export default {
         this.checkTimeNow()
       },
     },
+    nextWeekWeatherData: {
+      handler() {
+        this.getWeatherForWeek()
+      },
+    },
   },
   methods: {
     ...mapActions('cities', [
       'getWeatherData',
       'updateSelectedCityId',
       'updateIsNightNow',
+      'getWeatherDataForWeek',
+      'updateSelectedCityCoordinates',
     ]),
     fetchWeather() {
-      this.getWeatherData()
+      // Promise.all([this.getWeatherData(), this.getWeatherDataForWeek()])
+      Promise.resolve()
+        .then(this.getWeatherData())
+        .then(this.getWeatherDataForWeek())
     },
     getNumbersDifference(firstArg, secondArg) {
       return firstArg - secondArg
     },
     getTimeFromDate(arg) {
-      const date = this.getDate(arg)
+      const date = typeof arg !== 'object' ? this.getDate(arg) : arg
       const timeHours = date.getHours()
       const timeMinutes = date.getMinutes()
+      console.log(this.nextWeekWeatherData, 'weatherDataForWeek')
       return `${timeHours}:${timeMinutes}`
     },
     getDate(arg) {
@@ -230,6 +223,25 @@ export default {
       if (this.weatherData) {
         this.isNight = this.weatherData.dt - this.weatherData.sys.sunset > 0
       }
+    },
+    getWeatherForWeek() {
+      if (this.weatherDataForWeek) {
+        return this.weatherDataForWeek.map((item) => {
+          return {
+            date: this.getDate(item.dt),
+            temp: item.temp,
+            icon: item.weather[0].icon,
+          }
+        })
+      }
+      return null
+    },
+    setCoordinates() {
+      const res = this.list.find((item) => {
+        return this.list.id === this.selectedCity
+      })
+      this.updateSelectedCityCoordinates(res)
+      // this.$store.commit('cities/UPDATE_SELECTED_CITY_ID', selectedCityId)
     },
   },
 }
